@@ -130,7 +130,7 @@
                     guildBanner.src = `https://cdn.discordapp.com/banners/${guild.id}/${guild.banner}.webp?size=512`;
                     guildBanner.style.filter = "blur(8px)";
                 } else {
-                    guildBanner.src = guild.iconURL;
+                    guildBanner.src = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp`;
                     guildBanner.style.filter = "blur(2px)";
                 }
                 guildContainer.appendChild(guildBanner);
