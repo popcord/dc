@@ -7,47 +7,56 @@
 
   <style>
 
-    * {
 
-      font-size: 2.5vw;
 
-      text-align: center;
+* {
+  box-sizing: border-box;
+  font-size: 2.5vw;
+  text-align: center;
+  background-color: #131418;
+  color: #dfdfdf;
+}
 
-      background-color: #131418;
+#login {
+  border-color: rgba(255, 255, 255, .1);
+  background-color: rgba(255, 255, 255, .05) !important;
+}
 
-      color: #dfdfdf;
+#result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
 
-    }
+.guild-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2vw;
+  padding: 2vw;
+  border: 2px solid #dfdfdf;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #dfdfdf;
+}
 
-    #login {
+.guild-icon {
+  width: 10vw;
+  height: 10vw;
+  border-radius: 50%;
+  margin-bottom: 1vw;
+  box-shadow: 0 0 10px #dfdfdf;
+}
 
-      border-color: rgba(255, 255, 255, .1);
+.guild-name {
+  font-size: 2vw;
+  font-weight: bold;
+  margin-bottom: 1vw;
+}
 
-      background-color: rgba(255, 255, 255, .05) !important;
 
-    }
-
-    .guild {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      margin: 1rem;
-
-    }
-
-    .guild-name {
-
-      margin-left: 1rem;
-
-      font-size: 1.5rem;
-
-      font-weight: bold;
-
-    }
 
   </style>
 
@@ -135,31 +144,8 @@
 
           guildIcon.width = 64;
 
-          guildIcon.height = 64;
 
-          guildElement.appendChild(guildIcon);
 
-          let guildName = document.createElement("p");
-
-          guildName.classList.add("guild-name");
-
-          guildName.innerText = guild.name;
-
-          guildElement.appendChild(guildName);
-
-          guildsContainer.appendChild(guildElement);
-
-        }
-
-        document.body.appendChild(guildsContainer);
-
-        let num = response.length;
-
-        document.getElementById("result").innerHTML = "You are in " + num + "/" + max + " guilds";
-
-      });
-
-    }
 
             if (location.hash === "") {
 
