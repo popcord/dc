@@ -139,6 +139,42 @@
             document.getElementById("result").appendChild(resultContainer);
         });
     }
+
+            if (location.hash === "") {
+
+                const token = getCookie("token");
+
+                if (token) checkGuilds(token);
+
+                else logout();
+
+            } else {
+
+                let hash = location.hash;
+
+                if (hash.includes("error=")) {
+
+                    document.getElementById("result").innerHTML = "Could not get access:<br>" + decodeURIComponent(new RegExp("error_description=(.+?)($|&)").exec(hash)[1].replace(/\+/g, " "));
+
+                    document.getElementById("logout").type = "button";
+
+                    document.getElementById("logout").value = "Try again";
+
+                } else {
+
+                    history.replaceState(null, "Discord Guild Limit Checker", "#"); // Remove token from browser history/address bar
+
+                    let token = new RegExp("access_token=(.+?)($|&)").exec(hash)[1];
+
+                    let expire = new RegExp("expires_in=(.+?)($|&)").exec(hash)[1];
+
+                    setCookie("token", token, expire);
+
+                    checkGuilds(token);
+
+                }
+
+            }
         </script>
     </body>
 </html>
