@@ -89,59 +89,50 @@
         document.cookie = name + "=" + value + "; max-age=" + maxage;
       }
 
-      function checkGuilds(token) {
-    
-        document.getElementById("logout").type = "button";
-    
-        document.getElementById("result").innerHTML = "Fetching data...";
-    
-        let max = 100;
-    
-        get("users/@me", token).then(user => {
-    
-            if (user.premium_type === 2) max = 200;
-    
-        });
-    
-        get("users/@me/guilds", token).then(response => {
-    
-            let num = response.length;
-    
-            let resultContainer = document.createElement("div");
-            resultContainer.id = "result-container";
-    
-            for (let i = 0; i < num; i++) {
-                let guild = response[i];
-    
-                let guildContainer = document.createElement("div");
-                guildContainer.className = "guild-container";
-    
-                let guildName = document.createElement("p");
-                guildName.className = "guild-name";
-                guildName.textContent = guild.name;
-                guildContainer.appendChild(guildName);
-    
-                
-                let iconUrl = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp` || "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
+      
+      function checkGuilds() {
+  let guilds = client.guilds.cache.array();
+  let resultContainer = document.createElement("div");
+  resultContainer.id = "result-container";
 
-                let guildBanner = document.createElement("img");
-                guildBanner.className = "guild-banner";
-                if (guild.banner) {
-                    guildBanner.src = `https://cdn.discordapp.com/banners/${guild.id}/${guild.banner}.webp?size=512`;
-                    guildBanner.style.filter = "blur(8px)";
-                } else {
-                    guildBanner.src = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp`;
-                    guildBanner.style.filter = "blur(2px)";
-                }
-                guildContainer.appendChild(guildBanner);
-    
-                resultContainer.appendChild(guildContainer);
-            }
-    
-            document.getElementById("result").innerHTML = "";
-            document.getElementById("result").appendChild(resultContainer);
-        });
-    }
+  guilds.forEach((guild) => {
+    let iconUrl = guild.icon
+      ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp`
+      : "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
+    let bannerUrl = guild.banner
+      ? `https://cdn.discordapp.com/banners/${guild.id}/${guild.banner}.webp?size=1024`
+      : iconUrl;
+
+    let guildContainer = document.createElement("div");
+    guildContainer.classList.add("guild-container");
+
+    let guildBanner = document.createElement("div");
+    guildBanner.classList.add("guild-banner");
+    guildBanner.style.backgroundImage = `url(${bannerUrl})`;
+
+    let guildLogo = document.createElement("img");
+    guildLogo.classList.add("guild-logo");
+    guildLogo.src = iconUrl;
+    guildLogo.onerror = () => {
+      guildLogo.src =
+        "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
+    };
+
+    let guildName = document.createElement("div");
+    guildName.classList.add("guild-name");
+    guildName.innerText = guild.name;
+
+    guildContainer.appendChild(guildBanner);
+    guildContainer.appendChild(guildLogo);
+    guildContainer.appendChild(guildName);
+    resultContainer.appendChild(guildContainer);
+  });
+
+  let contentContainer = document.getElementById("content-container");
+  contentContainer.innerHTML = "";
+  contentContainer.appendChild(resultContainer);
+}
+
 
             if (location.hash === "") {
 
