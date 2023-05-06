@@ -28,9 +28,49 @@
         border-radius: 50%;
         margin-bottom: 10px;
       }
-      .guild-name {
-        font-size: 1.5vw;
-      }
+
+#background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#background-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#guild-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.guild-name {
+  margin-top: 10px;
+  font-size: 2.5vw;
+  font-weight: bold;
+  text-align: center;
+}
+
+
     </style>
   </head>
   <body>
@@ -118,26 +158,60 @@
             guildName.style.marginBottom = "10px";
 
             let guildDesc = document.createElement("p");
-            guildDesc.innerHTML = guild.description || "No description available";
-            guildDesc.style.fontSize = "2.5vw";
-            guildDesc.style.marginBottom = "10px";
+      function checkGuilds(token) {
+  document.getElementById("logout").type = "button";
 
-            let memberCount = document.createElement("p");
-            memberCount.innerHTML = guild.member_count + " members";
-            memberCount.style.fontSize = "2.5vw";
+  document.getElementById("result").innerHTML = "Fetching data...";
+  
+  let max = 100;
 
-            guildContainer.appendChild(guildName);
-            guildContainer.appendChild(guildDesc);
-            guildContainer.appendChild(memberCount);
+  get("users/@me", token).then(user => {
+    if (user.premium_type === 2) max = 200;
+  });
 
-            resultContainer.appendChild(guildContainer);
-        });
+  get("users/@me/guilds", token).then(async response => {
+    let num = response.length;
 
-        document.body.appendChild(resultContainer);
+    let resultContainer = document.createElement("div");
+    resultContainer.id = "result-container";
 
-    });
+    let backgroundContainer = document.createElement("div");
+    backgroundContainer.id = "background-container";
 
+    for (let i = 0; i < num; i++) {
+      let guild = response[i];
+      let guildContainer = document.createElement("div");
+      guildContainer.className = "guild-container";
+
+      // Check for banner
+      if (guild.banner) {
+        let banner = document.createElement("img");
+        banner.src = `https://cdn.discordapp.com/banners/${guild.id}/${guild.banner}.png?size=1024`;
+        banner.style.filter = "blur(10px)";
+        backgroundContainer.appendChild(banner);
+      } else {
+        let logo = document.createElement("img");
+        logo.src = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=1024`;
+        logo.style.filter = "blur(10px)";
+        backgroundContainer.appendChild(logo);
+      }
+
+      let guildName = document.createElement("p");
+      guildName.innerHTML = guild.name;
+      guildName.className = "guild-name";
+
+      guildContainer.appendChild(guildName);
+      resultContainer.appendChild(guildContainer);
+    }
+
+    document.body.appendChild(backgroundContainer);
+    document.body.appendChild(resultContainer);
+
+    document.getElementById("result").innerHTML = "You are in " + num + "/" + max + " guilds";
+  });
 }
+
+
       if (location.hash === "") {
 
                 const token = getCookie("token");
