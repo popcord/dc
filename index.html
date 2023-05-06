@@ -5,29 +5,51 @@
 
         <title>Discord Guild Limit Checker</title>
 
-        <style>
+  <style>
 
-            * {
+    * {
 
-                font-size: 2.5vw;
+      font-size: 2.5vw;
 
-                text-align: center;
+      text-align: center;
 
-                background-color: #131418;
+      background-color: #131418;
 
-                color: #dfdfdf;
+      color: #dfdfdf;
 
-            }
+    }
 
-            #login {
+    #login {
 
-                border-color: rgba(255, 255, 255, .1);
+      border-color: rgba(255, 255, 255, .1);
 
-                background-color: rgba(255, 255, 255, .05) !important;
+      background-color: rgba(255, 255, 255, .05) !important;
 
-            }
+    }
 
-        </style>
+    .guild {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      margin: 1rem;
+
+    }
+
+    .guild-name {
+
+      margin-left: 1rem;
+
+      font-size: 1.5rem;
+
+      font-weight: bold;
+
+    }
+
+  </style>
 
     </head>
 
@@ -81,27 +103,63 @@
 
             function checkGuilds(token) {
 
-                document.getElementById("logout").type = "button";
+      document.getElementById("logout").type = "button";
 
-                document.getElementById("result").innerHTML = "Fetching data...";
+      document.getElementById("result").innerHTML = "Fetching data...";
 
-                let max = 100;
+      let max = 100;
 
-                get("users/@me", token).then(user => {
+      get("users/@me", token).then(user => {
 
-                    if (user.premium_type === 2) max = 200;
+        if (user.premium_type === 2) max = 200;
 
-                });
+      });
 
-                get("users/@me/guilds", token).then(response => {
+      get("users/@me/guilds", token).then(response => {
 
-                    let num = response.length;
+        let guildsContainer = document.createElement("div");
 
-                    document.getElementById("result").innerHTML = "You are in " + num + "/" + max + " guilds";
+        for (let i = 0; i < response.length; i++) {
 
-                });
+          let guild = response[i];
 
-            }
+          let guildElement = document.createElement("div");
+
+          guildElement.classList.add("guild");
+
+          let guildIcon = document.createElement("img");
+
+          guildIcon.src = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`;
+
+          guildIcon.alt = "Guild Icon";
+
+          guildIcon.width = 64;
+
+          guildIcon.height = 64;
+
+          guildElement.appendChild(guildIcon);
+
+          let guildName = document.createElement("p");
+
+          guildName.classList.add("guild-name");
+
+          guildName.innerText = guild.name;
+
+          guildElement.appendChild(guildName);
+
+          guildsContainer.appendChild(guildElement);
+
+        }
+
+        document.body.appendChild(guildsContainer);
+
+        let num = response.length;
+
+        document.getElementById("result").innerHTML = "You are in " + num + "/" + max + " guilds";
+
+      });
+
+    }
 
             if (location.hash === "") {
 
