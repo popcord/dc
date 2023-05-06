@@ -122,7 +122,7 @@
                 guildContainer.appendChild(guildName);
     
                 
-                let iconUrl = guild.iconURL({ size: 256, dynamic: true }) || "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
+                let iconUrl = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp` || "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
 
                 let guildBanner = document.createElement("img");
                 guildBanner.className = "guild-banner";
