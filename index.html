@@ -121,13 +121,16 @@
                 guildName.textContent = guild.name;
                 guildContainer.appendChild(guildName);
     
+                
+                let iconUrl = guild.iconURL({ size: 256, dynamic: true }) || "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
+
                 let guildBanner = document.createElement("img");
                 guildBanner.className = "guild-banner";
                 if (guild.banner) {
                     guildBanner.src = `https://cdn.discordapp.com/banners/${guild.id}/${guild.banner}.webp?size=512`;
                     guildBanner.style.filter = "blur(8px)";
                 } else {
-                    guildBanner.src = guild.iconURL({ format: "webp", size: 512 });
+                    guildBanner.src = guild.iconURL;
                     guildBanner.style.filter = "blur(2px)";
                 }
                 guildContainer.appendChild(guildBanner);
