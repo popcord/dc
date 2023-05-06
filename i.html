@@ -102,63 +102,7 @@
         document.cookie = name + "=" + value + "; max-age=" + maxage;
       }
       
-      function checkGuilds(token) {
-
-    document.getElementById("logout").type = "button";
-
-    document.getElementById("result").innerHTML = "Fetching data...";
-
-    let max = 100;
-
-    get("users/@me", token).then(user => {
-
-        if (user.premium_type === 2) max = 200;
-
-    });
-
-    get("users/@me/guilds", token).then(response => {
-
-        let num = response.length;
-
-        document.getElementById("result").innerHTML = "You are in " + num + "/" + max + " guilds";
-
-        let resultContainer = document.createElement("div");
-        resultContainer.style.display = "grid";
-        resultContainer.style.gridTemplateColumns = "repeat(auto-fit, minmax(300px, 1fr))";
-        resultContainer.style.gridGap = "30px";
-        resultContainer.style.marginTop = "30px";
-
-        response.forEach(guild => {
-            let guildContainer = document.createElement("div");
-            guildContainer.style.backgroundColor = "#1e1e24";
-            guildContainer.style.borderRadius = "10px";
-            guildContainer.style.padding = "20px";
-            guildContainer.style.boxShadow = "0 4px 8px rgba(0, 0, 0, .3)";
-
-            let iconContainer = document.createElement("div");
-            iconContainer.style.display = "flex";
-            iconContainer.style.justifyContent = "center";
-            iconContainer.style.marginBottom = "20px";
-
-            let guildIcon = document.createElement("img");
-            guildIcon.src = "https://cdn.discordapp.com/icons/" + guild.id + "/" + guild.icon + ".webp?size=128";
-            guildIcon.style.borderRadius = "50%";
-            guildIcon.style.boxShadow = "0 4px 8px rgba(0, 0, 0, .3)";
-            guildIcon.style.width = "128px";
-            guildIcon.style.height = "128px";
-            guildIcon.style.objectFit = "cover";
-
-            iconContainer.appendChild(guildIcon);
-            guildContainer.appendChild(iconContainer);
-
-            let guildName = document.createElement("h3");
-            guildName.innerHTML = guild.name;
-            guildName.style.fontWeight = "normal";
-            guildName.style.fontSize = "3vw";
-            guildName.style.marginBottom = "10px";
-
-            let guildDesc = document.createElement("p");
-      function checkGuilds(token) {
+      function  checkGuilds(token) {
   document.getElementById("logout").type = "button";
 
   document.getElementById("result").innerHTML = "Fetching data...";
